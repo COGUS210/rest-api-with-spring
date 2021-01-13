@@ -1,18 +1,16 @@
 package com.example.demoinflearnrestapi.events;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
-public class EventResource extends RepresentationModel {
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-    @JsonUnwrapped //필드 메서드 모두 가능
-    private Event event;
+public class EventResource extends EntityModel<Event> {
 
-    public EventResource(Event event) {
-        this.event = event;
-    }
-
-    public Event getEvent() {
-        return event;
+    public EventResource(Event event, Link... links) {
+        super(event, links);
+        add(linkTo(EventController.class).slash(event.getId()).withSelfRel());
     }
 }
